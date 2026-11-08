@@ -86,65 +86,42 @@ export interface StreetEntry {
 
 // First names that should NEVER trigger a multi-word person name street by themselves
 const FIRST_NAMES_BLACKLIST = new Set([
-  "זאב", "zeev",
-  "דוד", "david",
-  "משה", "moshe",
-  "אברהם", "avraham",
-  "יוסף", "yosef", "joseph",
-  "יצחק", "yitzhak",
-  "יעקב", "yaakov",
-  "חיים", "haim", "chaim",
-  "שמואל", "shmuel",
-  "שלמה", "shlomo",
-  "אהרן", "aharon",
-  "אליהו", "eliyahu",
-  "אליעזר", "eliezer",
-  "אלברט", "albert",
-  "אלכסנדר", "alexander",
-  "מרדכי", "mordechai",
-  "שמעון", "shimon",
-  "יהודה", "yehuda",
-  "בנימין", "benjamin",
-  "דניאל", "daniel",
-  "מיכאל", "michael",
-  "צבי", "tzvi",
-  "מאיר", "meir",
-  "אורי", "uri",
-  "ישראל", "israel",
-  "אריה", "aryeh",
-  "עקיבא", "akiva",
-  "בבה", "beba",
-  "יהושע", "yehoshua",
-  "אבא", "abba",
-  "יואל", "yoel",
-  "עוזי", "uzi",
-  "תאודור", "theodor",
-  "מנחם", "menachem",
-  "ארתור", "arthur",
-  "מקס", "max",
-  "נחום", "nahum",
-  "אשר", "asher",
-  "יואכים", "joachim",
+  // Hebrew
+  "אבא", "אברהם", "אדם", "אהוד", "אהרן", "אודי", "אורי", "אוריאל", "אורן", "אוסקר",
+  "אייל", "אילן", "איסר", "איציק", "איתי", "איתמר", "איתן", "אלברט", "אליהו", "אליעזר",
+  "אלכס", "אלכסנדר", "אלעד", "אלעזר", "אמיר", "אמנון", "אנדרי", "אנדריי", "אנטון", "אנצו",
+  "אסף", "אפרים", "ארי", "אריאל", "אריה", "ארתור", "אשר",
+  "בבה", "בוגי", "בועז", "בני", "בנימין", "ברוך", "ברק",
+  "גבי", "גבריאל", "גדעון", "גיורא", "גילי", "גל", "גלעד",
+  "דב", "דוד", "דודו", "דן", "דני", "דניאל", "דרור",
+  "הוגו", "הילל", "הלל", "הרי", "הנרי",
+  "ואלטר", "ויקטור", "ולדימיר",
+  "זאב", "זבולון", "זהר", "זלמן", "זליג",
+  "חביב", "חגי", "חזי", "חיים", "חנן", "חנניה", "חסן",
+  "טוביה", "טל",
+  "יאיר", "יגאל", "ידידיה", "יהודה", "יהונתן", "יהושע", "יואב", "יואל", "יואכים", "יוחנן",
+  "יונתן", "יוסי", "יוסף", "יורם", "יובל", "יורי", "יחזקאל", "יחיאל", "ינאי",
+  "יעקב", "יצחק", "ירון", "ישראל", "יששכר",
+  "לאון", "לואי", "לוטר", "לוי", "ליאון", "ליאור", "ליונל", "לסלי",
+  "מאיר", "מארק", "מיכאל", "מיכה", "מנחם", "מנשה", "מרדכי", "משה", "מקס",
+  "נדב", "נועם", "נח", "נחום", "נחמיה", "ניסן", "ניסים", "ניר", "נתן", "נתנאל",
+  "סאלח", "סטפן", "סידני", "סיימון",
+  "עבדאללה", "עבד", "עודד", "עוזי", "עוזיאל", "עזרא", "עזריאל", "עידו", "עמוס", "עמיר", "עמנואל", "עמירם", "ערן", "עקיבא",
+  "פול", "פיטר", "פינחס", "פנחס", "פסח", "פרנץ", "פליקס",
+  "צבי", "צדוק", "ציון",
+  "קובי", "קלמן",
+  "ראובן", "ראול", "רוברט", "רודי", "רועי", "רונן", "רז", "רחמים", "רמי", "רפאל",
+  "שאול", "שבתאי", "שגיא", "שי", "שלום", "שלמה", "שמואל", "שמעון", "שמשון", "שניאור",
+  "תאודור", "תומר", "תמיר",
+  // English
+  "zeev", "david", "moshe", "avraham", "yosef", "joseph", "yitzhak", "yaakov",
+  "haim", "chaim", "shmuel", "shlomo", "aharon", "eliyahu", "eliezer", "albert",
+  "alexander", "mordechai", "shimon", "reuven", "yehuda", "benjamin", "daniel",
+  "michael", "gabriel", "rafael", "natan", "tzvi", "meir", "uri", "israel",
+  "aryeh", "akiva", "beba", "yohanan", "amos", "gideon", "yehoshua", "abba",
+  "yoel", "uzi", "theodor", "menachem", "arthur", "max", "nahum", "asher",
+  "joachim", "andrei", "andrey", "lyonel", "lionel", "leon", "mark", "paul", "harry"
 ]);
-
-const COMMON_FIRST_NAMES = [
-  "דוד ",
-  "יוסף ",
-  "אברהם ",
-  "משה ",
-  "יצחק ",
-  "יעקב ",
-  "אלברט ",
-  "אליעזר ",
-  "חיים ",
-  "שמואל ",
-  "יהושע ",
-  "אלכסנדר ",
-  "מרדכי ",
-  "שמעון ",
-  "אבא ",
-  "זאב ",
-];
 
 /** Returns a lookup map: normalized form → canonical name_he */
 export function buildIndex(streets: StreetEntry[]): Map<string, string> {
@@ -227,13 +204,29 @@ export function buildIndex(streets: StreetEntry[]): Map<string, string> {
       }
     }
 
-    // 5. First name stripping for iconic streets: "זאב ז'בוטינסקי" -> "ז'בוטינסקי"
+    // 5. Surname extraction for 2-word streets:
+    // e.g. "מאיר יערי" -> "יערי", "אנדרי סחרוב" -> "סחרוב", "ווטסון ליונל" -> "ווטסון"
     const normName = normalizeHebrew(cleanedForComma);
-    for (const fn of COMMON_FIRST_NAMES) {
-      if (normName.startsWith(fn)) {
-        // Register the remainder (the surname), not the first name!
-        register(normName.slice(fn.length), s.name_he, isMultiWord);
+    const nameWords = normName.split(/\s+/).filter(Boolean);
+    if (nameWords.length === 2) {
+      const [w0, w1] = nameWords;
+      if (FIRST_NAMES_BLACKLIST.has(w0) && !FIRST_NAMES_BLACKLIST.has(w1)) {
+        register(w1, s.name_he, isMultiWord);
+      } else if (FIRST_NAMES_BLACKLIST.has(w1) && !FIRST_NAMES_BLACKLIST.has(w0)) {
+        register(w0, s.name_he, isMultiWord);
       }
+    }
+
+    // 6. Spelling variants (e.g. שוודיה <-> שבדיה, אנדריי <-> אנדרי)
+    if (normName.includes("שוודי")) {
+      register(normName.replace(/שוודי/g, "שבדי"), s.name_he, isMultiWord);
+      register("שבדיה", s.name_he, isMultiWord);
+    } else if (normName.includes("שבדי")) {
+      register(normName.replace(/שבדי/g, "שוודי"), s.name_he, isMultiWord);
+      register("שוודיה", s.name_he, isMultiWord);
+    }
+    if (normName.includes("אנדרי")) {
+      register(normName.replace(/אנדרי/g, "אנדריי"), s.name_he, isMultiWord);
     }
 
     // 6. English transliterations
