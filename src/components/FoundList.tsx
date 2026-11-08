@@ -32,7 +32,7 @@ export function FoundList({ revealed, streets, lastFound }: Props) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center text-slate-400 text-sm italic p-6 text-center">
         <span className="text-3xl mb-2 opacity-50">🧭</span>
-        <span>עוד לא נמצאו רחובות...</span>
+        <span>עוד לא נמצאו רחובות</span>
         <span className="text-xs text-slate-400 mt-1">הקלד שם רחוב כדי לחשוף אותו במפה</span>
       </div>
     );
@@ -45,7 +45,7 @@ export function FoundList({ revealed, streets, lastFound }: Props) {
           <input
             type="text"
             dir="auto"
-            placeholder="סנן רחובות שנמצאו..."
+            placeholder="סנן רחובות שנמצאו"
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
             className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-400 outline-none"
