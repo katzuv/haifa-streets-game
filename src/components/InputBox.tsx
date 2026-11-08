@@ -16,11 +16,94 @@ export function InputBox({ onSubmit, disabled, autoFocus = true }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const feedbackTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const valueRef = useRef(value);
+  valueRef.current = value;
+
+  const onSubmitRef = useRef(onSubmit);
+  onSubmitRef.current = onSubmit;
+
+  const disabledRef = useRef(disabled);
+  disabledRef.current = disabled;
+
   useEffect(() => {
     if (!disabled && autoFocus) {
       inputRef.current?.focus();
     }
   }, [disabled, autoFocus]);
+
+  // Global key capture: if user clicks on the map or anywhere else and starts typing,
+  // refocus the input box and append the keystroke so nothing is lost.
+  useEffect(() => {
+    function handleGlobalKeyDown(e: KeyboardEvent) {
+      if (disabledRef.current) return;
+      const input = inputRef.current;
+      if (!input) return;
+
+      // Only handle if this input instance is visible in the viewport
+      if (input.offsetWidth === 0 && input.offsetHeight === 0) return;
+
+      // Ignore if user is already typing in an input or textarea
+      const active = document.activeElement as HTMLElement | null;
+      if (
+        active === input ||
+        active?.tagName === "INPUT" ||
+        active?.tagName === "TEXTAREA" ||
+        active?.isContentEditable
+      ) {
+        return;
+      }
+
+      // Ignore browser shortcuts / modifier keys
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      if (e.key === "Backspace") {
+        e.preventDefault();
+        input.focus();
+        const nextValue = valueRef.current.slice(0, -1);
+        setValue(nextValue);
+        return;
+      }
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        input.focus();
+        const result = onSubmitRef.current(valueRef.current);
+        if (result.status === "matched") {
+          setValue("");
+          setFeedback("matched");
+        } else if (result.status === "already") {
+          setFeedback("already");
+        } else if (result.status === "miss") {
+          setFeedback("miss");
+        }
+        clearFeedback();
+        return;
+      }
+
+      // Single printable character (Hebrew/English letter, number, space, etc.)
+      if (e.key.length === 1) {
+        e.preventDefault();
+        input.focus();
+        const nextValue = valueRef.current + e.key;
+        setValue(nextValue);
+
+        const result = onSubmitRef.current(nextValue);
+        if (result.status === "matched") {
+          setValue("");
+          setFeedback("matched");
+          clearFeedback();
+        } else if (result.status === "already") {
+          setFeedback("already");
+          clearFeedback();
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, []);
 
   function clearFeedback() {
     if (feedbackTimeout.current) clearTimeout(feedbackTimeout.current);
